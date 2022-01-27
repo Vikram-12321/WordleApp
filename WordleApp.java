@@ -34,7 +34,7 @@ public class WordleApp extends JFrame implements ActionListener {
 
     public static void setWinMsg(String text){
         Toolkit.getDefaultToolkit().beep();
-        JOptionPane optionPane = new JOptionPane(text,JOptionPane.ERROR_MESSAGE);
+        JOptionPane optionPane = new JOptionPane(text,JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = optionPane.createDialog("You Win!");
         optionPane.setPreferredSize(new Dimension(300, 300));
         dialog.setAlwaysOnTop(false);
@@ -95,7 +95,6 @@ public class WordleApp extends JFrame implements ActionListener {
             inputField[i] = new JTextField(1);
             inputField[i].setEditable(false);
 
-
             int IntValue = (int) Math.round((Math.floor(currentIndex/5.0)) * 5.0);
             int IntValueMax = IntValue + 5;
     
@@ -104,14 +103,15 @@ public class WordleApp extends JFrame implements ActionListener {
             }
             
             inputField[i].setText("");
-            inputField[i].setFont(new Font("Arial", Font.BOLD, 70));
+            inputField[i].setFont(new Font("Arial", Font.BOLD, 80));
             inputField[i].setBackground(Color.WHITE);
             inputField[i].setForeground(Color.BLACK);
-            Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
             inputField[i].setBorder(border);
             positionConstants.gridx = i % 5;
             positionConstants.gridy = i / 5;
             add(inputField[i], positionConstants);
+
             inputField[i].addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyTyped(KeyEvent event) {
@@ -121,11 +121,12 @@ public class WordleApp extends JFrame implements ActionListener {
                     if (Character.isLowerCase((inputChar))) {
                         event.setKeyChar((Character.toUpperCase(inputChar)));
                     }
+                    if (field.getText().length() >= 1 ) {
+                        event.consume();
+                    }
                     if (inputChar == 0) {
                         currentIndex -= 1;
                     }
-
-                    // if delete or backspace move to previous column
 
                     if (inputChar == 8) {
                         if (Math.floorMod(currentIndex,5) != 0) {
@@ -133,8 +134,7 @@ public class WordleApp extends JFrame implements ActionListener {
                             inputField[currentIndex].setText(field.getText().substring(0,0));
                         }
                         inputField[currentIndex].requestFocus();
-                    } // otherwise set focus in next column
-                    else {
+                    } else {
                         if (Math.floorMod(currentIndex,5) != 4) {
                             currentIndex += 1;
                             inputField[currentIndex].requestFocus();
@@ -190,7 +190,7 @@ public class WordleApp extends JFrame implements ActionListener {
                     userArray[i][0] = wordleWord.charAt(i);
                     appArray[i][0] = inputChar[i];
                     if(inputChar[i] == wordleWord.charAt(i)){
-                        inputField[5*guessNumber + i].setBackground(Color.GREEN);
+                        inputField[5*guessNumber + i].setBackground(new Color(106,170,100));
                         userArray[i][1] = 'u';
                         appArray[i][1] = 'u';
                     } else {
@@ -207,11 +207,11 @@ public class WordleApp extends JFrame implements ActionListener {
                         if (userArray[i][1] == 'a'){
                             if (appArray[j][1] == 'a'){
                                 if (appArray[j][0] == userArray[i][0]){
-                                    inputField[5*guessNumber + j].setBackground(Color.YELLOW);
+                                    inputField[5*guessNumber + j].setBackground(new Color(201,180,88));
                                     userArray[i][1] = 'u';
                                     appArray[j][1] = 'u';
                                 } else {
-                                    inputField[5*guessNumber + j].setBackground(Color.GRAY);
+                                    inputField[5*guessNumber + j].setBackground(new Color(129,131,132));
                                 }
                             }
                         }
@@ -246,8 +246,6 @@ public class WordleApp extends JFrame implements ActionListener {
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setPreferredSize(new Dimension(800, 1000));
         myFrame.setBackground(Color.WHITE);
-        // Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-        // myFrame.setBorder(border);
         myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.LIGHT_GRAY));
         myFrame.pack();
         myFrame.setVisible(true);
