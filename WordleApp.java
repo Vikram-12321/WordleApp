@@ -25,11 +25,12 @@ public class WordleApp extends JFrame implements ActionListener {
     public static boolean checkWord(String word) throws FileNotFoundException{
 
         char letter = Character.toLowerCase(word.charAt(0));
+        word = word.toLowerCase();
         Scanner txtscan = new Scanner(new File("Letters\\letter_"+ letter + ".txt"));
 
-        while(txtscan.hasNextLine()){
-            String str = txtscan.nextLine();
-            if(str.indexOf(word) != -1){
+        while(txtscan.hasNext()){
+            String str = txtscan.next();
+            if(str.equals(word)){
                 return true;
             } 
         }
@@ -61,8 +62,8 @@ public class WordleApp extends JFrame implements ActionListener {
             inputField[i].setEditable(true);
             inputField[i].setText("");
             inputField[i].setFont(new Font("Arial", Font.BOLD, 70));
-            inputField[i].setBackground(Color.DARK_GRAY);
-            inputField[i].setForeground(Color.WHITE);
+            inputField[i].setBackground(Color.WHITE);
+            inputField[i].setForeground(Color.BLACK);
             Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
             inputField[i].setBorder(border);
             positionConstants.gridx = i % 5;
@@ -104,33 +105,31 @@ public class WordleApp extends JFrame implements ActionListener {
     }
 
 
-    // myLabel = new JLabel("word not in databank");
-    // myLabel.setFont(new Font("Arial",Font.BOLD, 30));
-    // positionConstants.gridx = 0;
-    // positionConstants.gridy = 0;
-    // add(myLabel,positionConstants);
-    // myLabel.setVisible(true);
+    myLabel = new JLabel("word not in databank");
+    myLabel.setFont(new Font("Arial",Font.BOLD, 30));
+    positionConstants.gridx = 0;
+    positionConstants.gridy = 0;
+    add(myLabel,positionConstants);
+    myLabel.setVisible(false);
 
-    // enterButton = new JButton("Enter");
-    // enterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10));
-    // enterButton.setPreferredSize(new Dimension(80, 40));
-    // positionConstants.gridx = 7;
-    // positionConstants.gridy = 2;
-    // positionConstants.insets = new Insets(4, 4, 4, 4);
-    // add(enterButton, positionConstants);
-    // enterButton.addActionListener(this);
-
-    }
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode()==KeyEvent.VK_ENTER){
-            System.out.println("Hello");
-        }
+    enterButton = new JButton("Enter");
+    enterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10));
+    enterButton.setPreferredSize(new Dimension(80, 40));
+    positionConstants.gridx = 7;
+    positionConstants.gridy = 2;
+    positionConstants.insets = new Insets(4, 4, 4, 4);
+    add(enterButton, positionConstants);
+    enterButton.addActionListener(this);
 
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // declaring variables for my loop
-        int i, count;
+        int i;
+        int countWordle[] = new int[5];
+        int countInput[] = new int[5];
+
         StringBuilder word = new StringBuilder();
 
         char [] inputChar = new char[5];
@@ -140,32 +139,36 @@ public class WordleApp extends JFrame implements ActionListener {
             word.append(inputChar[i]);
         }
 
+
         String singleString = word.toString();
+        StringBuilder available_for_yellow = new StringBuilder();
+
         try {
             if (checkWord(singleString)){
-
-            // For loop for changing colors
                 for(i = 0; i < 5; i++) {
                     if(inputChar[i] == wordleWord.charAt(i)){
                         inputField[5*guessNumber + i].setBackground(Color.GREEN);
+                    } else{
+                        available_for_yellow.append(wordleWord.charAt(i));
                     }
-                    else if (inputChar[i] == wordleWord.charAt(i) )   {
-                        inputField[5*guessNumber + i].setBackground(Color.YELLOW);
+                    if (inputChar[i] != wordleWord.charAt(i)) {
+                        if (wordleWord.indexOf(inputChar[i]) != -1) {
+                            if (wordleWord.indexOf(inputChar[i]) != -1) {
+                                inputField[5*guessNumber + i].setBackground(Color.YELLOW);
+                            } else {
+                                inputField[5*guessNumber + i].setBackground(Color.GRAY);
+                            }
+                        }  else {
+                            inputField[5*guessNumber + i].setBackground(Color.GRAY);
+                        }
                     }
-                    else if (inputChar[i] != wordleWord.charAt(i))   {
-                        inputField[5*guessNumber + i].setBackground(Color.GRAY);
-                    }
-                    
-                
                 }
-                for (i = 0; i < inputChar.length; ++i) {
 
-                }
                 guessNumber += 1;
                 currentIndex = guessNumber * 5;
                 inputField[currentIndex].requestFocus();
-            } else{
-                System.out.print("not a word");
+            } else {
+                
             }
         } catch (FileNotFoundException e1) {}
 
@@ -178,7 +181,7 @@ public class WordleApp extends JFrame implements ActionListener {
         myFrame.setBackground(Color.WHITE);
         // Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
         // myFrame.setBorder(border);
-        myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
+        myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.LIGHT_GRAY));
         myFrame.pack();
         myFrame.setVisible(true);
     }
