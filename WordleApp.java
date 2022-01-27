@@ -148,7 +148,7 @@ public class WordleApp extends JFrame implements ActionListener {
                 for(i = 0; i < 5; i++) {
                     if(inputChar[i] == wordleWord.charAt(i)){
                         inputField[5*guessNumber + i].setBackground(Color.GREEN);
-                    } else{
+                    } else {
                         available_for_yellow.append(wordleWord.charAt(i));
                     }
                     if (inputChar[i] != wordleWord.charAt(i)) {
@@ -168,7 +168,7 @@ public class WordleApp extends JFrame implements ActionListener {
                 currentIndex = guessNumber * 5;
                 inputField[currentIndex].requestFocus();
             } else {
-                
+                myLabel.setVisible(true);
             }
         } catch (FileNotFoundException e1) {}
 
