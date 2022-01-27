@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
@@ -10,60 +8,57 @@ import java.io.IOException;
 import java.io.File;
 import java.util.Scanner;
 
-
-public class WordleApp extends JFrame implements ActionListener {
+public class WordleApp extends JFrame {
     int currentIndex;
     static JTextField[] inputField = new JTextField[30];
     JLabel myLabel;
     int guessNumber = 0;
-    private JButton enterButton;
-    private static final int GAP = 1;
     private String wordleWord;
-    private int letterCount [] = new int[26];
-    private int lettersUsed [] = new int[26];
-    char alphabet [] = new char [26];
+    private int letterCount[] = new int[26];
+    private int lettersUsed[] = new int[26];
+    char alphabet[] = new char[26];
 
-    public static void setErrorMsg(String text){
+    public static void setErrorMsg(String text) {
         Toolkit.getDefaultToolkit().beep();
-        JOptionPane optionPane = new JOptionPane(text,JOptionPane.ERROR_MESSAGE);
+        JOptionPane optionPane = new JOptionPane(text, JOptionPane.ERROR_MESSAGE);
         JDialog dialog = optionPane.createDialog("Error");
         optionPane.setPreferredSize(new Dimension(500, 600));
         dialog.setAlwaysOnTop(false);
         dialog.setVisible(true);
     }
 
-    public static void setWinMsg(String text){
+    public static void setWinMsg(String text) {
         Toolkit.getDefaultToolkit().beep();
-        JOptionPane optionPane = new JOptionPane(text,JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane optionPane = new JOptionPane(text, JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = optionPane.createDialog("You Win!");
         optionPane.setPreferredSize(new Dimension(300, 300));
         dialog.setAlwaysOnTop(false);
         dialog.setVisible(true);
     }
 
-    public static boolean checkWord(String word) throws FileNotFoundException{
+    public static boolean checkWord(String word) throws FileNotFoundException {
 
         char letter = Character.toLowerCase(word.charAt(0));
         word = word.toLowerCase();
-        Scanner txtscan = new Scanner(new File("Letters\\letter_"+ letter + ".txt"));
+        Scanner txtscan = new Scanner(new File("Letters\\letter_" + letter + ".txt"));
 
-        while(txtscan.hasNext()){
+        while (txtscan.hasNext()) {
             String str = txtscan.next();
-            if(str.equals(word)){
+            if (str.equals(word)) {
                 return true;
-            } 
+            }
         }
         return false;
     }
 
-    public static String generateWordle() throws FileNotFoundException{
-        int num = (int)(Math.random()*(5750-1+1)+1);  
+    public static String generateWordle() throws FileNotFoundException {
+        int num = (int)(Math.random() * (5750 - 1 + 1) + 1);
 
-        String word="";
-        int count=0;
-  
+        String word = "";
+        int count = 0;
+
         Scanner txtscan = new Scanner(new File("wordbank.txt"));
-        while(count!=num){
+        while (count != num) {
             count++;
             word = txtscan.next();
         }
@@ -78,8 +73,8 @@ public class WordleApp extends JFrame implements ActionListener {
         positionConstants = new GridBagConstraints();
         wordleWord = generateWordle();
         // Initialize the values of the arrays; alphabet to uppercase letters; letterCount and letterUsed to zero
-        for (i=0; i< 26; i++){
-            alphabet[i] = (char)(i+65);
+        for (i = 0; i < 26; i++) {
+            alphabet[i] = (char)(i + 65);
             letterCount[i] = 0;
             lettersUsed[i] = 0;
         }
@@ -91,19 +86,19 @@ public class WordleApp extends JFrame implements ActionListener {
             }
         }
 
-        for(i =0;i< 30; ++i) {
+        for (i = 0; i < 30; ++i) {
             inputField[i] = new JTextField(1);
             inputField[i].setEditable(false);
 
-            int IntValue = (int) Math.round((Math.floor(currentIndex/5.0)) * 5.0);
+            int IntValue = (int) Math.round((Math.floor(currentIndex / 5.0)) * 5.0);
             int IntValueMax = IntValue + 5;
-    
-            if (i>=IntValue && i<IntValueMax){
+
+            if (i >= IntValue && i < IntValueMax) {
                 inputField[i].setEditable(true);
             }
-            
+
             inputField[i].setText("");
-            inputField[i].setFont(new Font("Arial", Font.BOLD, 80));
+            inputField[i].setFont(new Font("Arial", Font.BOLD, 75));
             inputField[i].setBackground(Color.WHITE);
             inputField[i].setForeground(Color.BLACK);
             Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
@@ -121,7 +116,7 @@ public class WordleApp extends JFrame implements ActionListener {
                     if (Character.isLowerCase((inputChar))) {
                         event.setKeyChar((Character.toUpperCase(inputChar)));
                     }
-                    if (field.getText().length() >= 1 ) {
+                    if (field.getText().length() >= 1) {
                         event.consume();
                     }
                     if (inputChar == 0) {
@@ -129,53 +124,39 @@ public class WordleApp extends JFrame implements ActionListener {
                     }
 
                     if (inputChar == 8) {
-                        if (Math.floorMod(currentIndex,5) != 0) {
+                        if (Math.floorMod(currentIndex, 5) != 0) {
                             currentIndex -= 1;
-                            inputField[currentIndex].setText(field.getText().substring(0,0));
+                            inputField[currentIndex].setText(field.getText().substring(0, 0));
                         }
                         inputField[currentIndex].requestFocus();
+                    } else if (inputChar == 10) {
+                        if ((currentIndex + 1) % 5 == 0) {
+                            actionPerformed();
+                        }
                     } else {
-                        if (Math.floorMod(currentIndex,5) != 4) {
+                        if (Math.floorMod(currentIndex, 5) != 4) {
                             currentIndex += 1;
                             inputField[currentIndex].requestFocus();
 
-                        } else{
-                            inputField[currentIndex].setText(field.getText().substring(0,0));
+                        } else {
+                            inputField[currentIndex].setText(field.getText().substring(0, 0));
                             inputField[currentIndex].requestFocus();
                         }
                     }
                 }
-        });
+            });
+        }
+
     }
 
-
-    myLabel = new JLabel("word not in databank");
-    myLabel.setFont(new Font("Arial",Font.BOLD, 30));
-    positionConstants.gridx = 0;
-    positionConstants.gridy = 0;
-    add(myLabel,positionConstants);
-    myLabel.setVisible(false);
-
-
-    enterButton = new JButton("Enter");
-    enterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10));
-    enterButton.setPreferredSize(new Dimension(80, 40));
-    positionConstants.gridx = 7;
-    positionConstants.gridy = 2;
-    positionConstants.insets = new Insets(4, 4, 4, 4);
-    add(enterButton, positionConstants);
-    enterButton.addActionListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed() {
 
         StringBuilder word = new StringBuilder();
-        char [] inputChar = new char[5];
+        char[] inputChar = new char[5];
         System.out.println(wordleWord);
 
-        for(int i = 0; i < 5; i++) {
-            inputChar[i] = inputField[5*guessNumber + i].getText().charAt(0);
+        for (int i = 0; i < 5; i++) {
+            inputChar[i] = inputField[5 * guessNumber + i].getText().charAt(0);
             word.append(inputChar[i]);
         }
 
@@ -184,34 +165,34 @@ public class WordleApp extends JFrame implements ActionListener {
         char[][] appArray = new char[5][2];
 
         try {
-            if (checkWord(singleString)){
+            if (checkWord(singleString)) {
 
-                for(int i = 0; i < 5; i++) {
+                for (int i = 0; i < 5; i++) {
                     userArray[i][0] = wordleWord.charAt(i);
                     appArray[i][0] = inputChar[i];
-                    if(inputChar[i] == wordleWord.charAt(i)){
-                        inputField[5*guessNumber + i].setBackground(new Color(106,170,100));
+                    if (inputChar[i] == wordleWord.charAt(i)) {
+                        inputField[5 * guessNumber + i].setBackground(new Color(106, 170, 100));
                         userArray[i][1] = 'u';
                         appArray[i][1] = 'u';
                     } else {
                         userArray[i][1] = 'a';
                         appArray[i][1] = 'a';
                     }
-                } 
-                if (singleString.equals(wordleWord)){
+                }
+                if (singleString.equals(wordleWord)) {
                     setWinMsg("You have Won!");
                 }
 
-                for(int i = 0; i < 5; i++) {
-                    for (int j=0; j<5; j++){
-                        if (userArray[i][1] == 'a'){
-                            if (appArray[j][1] == 'a'){
-                                if (appArray[j][0] == userArray[i][0]){
-                                    inputField[5*guessNumber + j].setBackground(new Color(201,180,88));
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        if (userArray[i][1] == 'a') {
+                            if (appArray[j][1] == 'a') {
+                                if (appArray[j][0] == userArray[i][0]) {
+                                    inputField[5 * guessNumber + j].setBackground(new Color(201, 180, 88));
                                     userArray[i][1] = 'u';
                                     appArray[j][1] = 'u';
                                 } else {
-                                    inputField[5*guessNumber + j].setBackground(new Color(129,131,132));
+                                    inputField[5 * guessNumber + j].setBackground(new Color(129, 131, 132));
                                 }
                             }
                         }
@@ -222,7 +203,7 @@ public class WordleApp extends JFrame implements ActionListener {
                 currentIndex = guessNumber * 5;
                 inputField[currentIndex].requestFocus();
                 resetFocusParams(currentIndex);
-                
+
             } else {
                 setErrorMsg("Word does not exist.");
             }
@@ -230,19 +211,19 @@ public class WordleApp extends JFrame implements ActionListener {
 
     }
     private void resetFocusParams(int currentIndex) {
-        int IntValue = (int) Math.round((Math.floor(currentIndex/5.0)) * 5.0);
+        int IntValue = (int) Math.round((Math.floor(currentIndex / 5.0)) * 5.0);
         int IntValueMax = IntValue + 5;
         System.out.println(IntValue);
 
-        for (int i=0; i<30; i++){
-            if (i>=IntValue && i<IntValueMax){
+        for (int i = 0; i < 30; i++) {
+            if (i >= IntValue && i < IntValueMax) {
                 inputField[i].setEditable(true);
             }
         }
     }
-    public static void main(String[] args) throws IOException{
-        WordleApp myFrame = new WordleApp();
 
+    public static void main(String[] args) throws IOException {
+        WordleApp myFrame = new WordleApp();;
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setPreferredSize(new Dimension(800, 1000));
         myFrame.setBackground(Color.WHITE);
