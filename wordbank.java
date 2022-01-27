@@ -1,18 +1,27 @@
-import java.io.PrintWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.Writer;
+
 
 public class wordbank {
     public static void main(String args[]) throws IOException {
-        FileOutputStream fileStream = null;
-        PrintWriter outFS = null;
+        
+        Scanner scnr = new Scanner(new File("wordbank.txt"));
 
-        fileStream = new FileOutputStream("words.txt");
-        outFS = new PrintWriter(fileStream);
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Letters\\letter_a.txt"), "utf-8"));
+            
 
-        outFS.println("Hello");
-        outFS.println("1 2 3");
-
-        outFS.close();
+        while(scnr.hasNextLine()) {
+            String word = scnr.nextLine();
+            if (word.charAt(0) == 'a'){
+                writer.write(word + "\n");
+            }
+        }
+        writer.close();
+        scnr.close();
     }
 }
