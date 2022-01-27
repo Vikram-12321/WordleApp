@@ -85,11 +85,11 @@ public class WordleApp extends JFrame implements ActionListener {
     }
 
 
-    myLabel = new JLabel("word not in databank");
-    myLabel.setFont(new Font("Arial",Font.PLAIN, 20));
-    positionConstants.gridx = 6;
-    positionConstants.gridy = 2;
-    add(myLabel,positionConstants);
+    // myLabel = new JLabel("word not in databank");
+    // myLabel.setFont(new Font("Arial",Font.PLAIN, 20));
+    // positionConstants.gridx = 6;
+    // positionConstants.gridy = 2;
+    // add(myLabel,positionConstants);
 
     enterButton = new JButton("Enter");
     enterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10));
