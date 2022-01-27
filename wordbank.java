@@ -12,12 +12,13 @@ public class wordbank {
         
         Scanner scnr = new Scanner(new File("wordbank.txt"));
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Letters\\letter_a.txt"), "utf-8"));
+        char letter = 'c';
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Letters\\letter_"+ letter + ".txt"), "utf-8"));
             
 
         while(scnr.hasNextLine()) {
             String word = scnr.nextLine();
-            if (word.charAt(0) == 'a'){
+            if (word.charAt(0) == letter){
                 writer.write(word + "\n");
             }
         }
