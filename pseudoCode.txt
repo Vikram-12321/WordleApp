@@ -1,11 +1,19 @@
-if letter in position i is not equal to letter in the word in position i {
-    if the letter in position i is somewhere in the word (using indexOf) {
-        if the letterUsed is less than letter Count for that letter {
-            turn yellow
-         } else {
-            turn gray
-         }
-   } else {
-       turn gray
-   }
-}
+            if (checkWord(singleString)){
+                for(i = 0; i < 5; i++) {
+                    if(inputChar[i] == wordleWord.charAt(i)){
+                        inputField[5*guessNumber + i].setBackground(Color.GREEN);
+                    } else {
+                        available_for_yellow.append(wordleWord.charAt(i));
+                    }
+                    if (inputChar[i] != wordleWord.charAt(i)) {
+                        if (wordleWord.indexOf(inputChar[i]) != -1) {
+                            if (wordleWord.indexOf(inputChar[i]) != -1) {
+                                inputField[5*guessNumber + i].setBackground(Color.YELLOW);
+                            } else {
+                                inputField[5*guessNumber + i].setBackground(Color.GRAY);
+                            }
+                        }  else {
+                            inputField[5*guessNumber + i].setBackground(Color.GRAY);
+                        }
+                    }
+                }
