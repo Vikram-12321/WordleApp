@@ -1,0 +1,11 @@
+if letter in position i is not equal to letter in the word in position i {
+    if the letter in position i is somewhere in the word (using indexOf) {
+        if the letterUsed is less than letter Count for that letter {
+            turn yellow
+         } else {
+            turn gray
+         }
+   } else {
+       turn gray
+   }
+}
