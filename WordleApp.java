@@ -107,10 +107,18 @@ public class WordleApp extends JFrame implements ActionListener {
         for(i = 0; i < 5; i++) {
             inputChar[i] = inputField[5*guessNumber + i].getText().charAt(0);
             System.out.println("inputChar[i]" +inputChar[i]);
+
+// declaring variables for my loop
+        int count;
+
+// For loop for changing colors
         }
         for(i = 0; i < 5; i++) {
             if(inputChar[i] == wordleWord.charAt(i)){
                 inputField[5*guessNumber + i].setBackground(Color.GREEN);
+            }
+            else if (inputChar[i] == wordleWord.charAt(i) && )   {
+                inputField[5*guessNumber + i].setBackground(Color.YELLOW);
             }
             else if (inputChar[i] != wordleWord.charAt(i))   {
                 inputField[5*guessNumber + i].setBackground(Color.GRAY);

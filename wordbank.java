@@ -12,8 +12,8 @@ public class wordbank {
         
         Scanner scnr = new Scanner(new File("wordbank.txt"));
 
-        char letter = 'c';
-        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Letters\\letter_"+ letter + ".txt"), "utf-8"));
+        char letter = 'z';
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("letter_"+ letter + ".txt"), "utf-8"));
             
 
         while(scnr.hasNextLine()) {
