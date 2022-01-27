@@ -1,10 +1,13 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.io.File;
 import java.util.Scanner;
 
@@ -27,10 +30,10 @@ public class WordleApp extends JFrame {
         dialog.setVisible(true);
     }
 
-    public static void setWinMsg(String text) {
+    public static void setWinMsg(String text, int seconds) {
         Toolkit.getDefaultToolkit().beep();
-        JOptionPane optionPane = new JOptionPane(text, JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = optionPane.createDialog("You Win!");
+        JOptionPane optionPane = new JOptionPane("You took " + seconds + " seconds!", JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = optionPane.createDialog(text);
         optionPane.setPreferredSize(new Dimension(300, 300));
         dialog.setAlwaysOnTop(false);
         dialog.setVisible(true);
@@ -53,7 +56,6 @@ public class WordleApp extends JFrame {
 
     public static String generateWordle() throws FileNotFoundException {
         int num = (int)(Math.random() * (5750 - 1 + 1) + 1);
-
         String word = "";
         int count = 0;
 
@@ -66,6 +68,19 @@ public class WordleApp extends JFrame {
         return word;
     }
 
+    private void resetFocusParams(int currentIndex) {
+        int IntValue = (int) Math.round((Math.floor(currentIndex / 5.0)) * 5.0);
+        int IntValueMax = IntValue + 5;
+        System.out.println(IntValue);
+
+        for (int i = 0; i < 30; i++) {
+            if (i >= IntValue && i < IntValueMax) {
+                inputField[i].setEditable(true);
+            }
+        }
+    }
+    
+    
     private WordleApp() throws IOException {
         GridBagConstraints positionConstants;
         int i, j;
@@ -73,11 +88,12 @@ public class WordleApp extends JFrame {
         positionConstants = new GridBagConstraints();
         wordleWord = generateWordle();
         // Initialize the values of the arrays; alphabet to uppercase letters; letterCount and letterUsed to zero
+
         for (i = 0; i < 26; i++) {
             alphabet[i] = (char)(i + 65);
             letterCount[i] = 0;
             lettersUsed[i] = 0;
-        }
+        }        
 
         for (i = 0; i < 26; i++) {
             for (j = 0; j < wordleWord.length(); j++) {
@@ -98,10 +114,10 @@ public class WordleApp extends JFrame {
             }
 
             inputField[i].setText("");
-            inputField[i].setFont(new Font("Arial", Font.BOLD, 75));
+            inputField[i].setFont(new Font("Arial", Font.BOLD, 80));
             inputField[i].setBackground(Color.WHITE);
             inputField[i].setForeground(Color.BLACK);
-            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
             inputField[i].setBorder(border);
             positionConstants.gridx = i % 5;
             positionConstants.gridy = i / 5;
@@ -146,7 +162,6 @@ public class WordleApp extends JFrame {
                 }
             });
         }
-
     }
 
     public void actionPerformed() {
@@ -180,7 +195,8 @@ public class WordleApp extends JFrame {
                     }
                 }
                 if (singleString.equals(wordleWord)) {
-                    setWinMsg("You have Won!");
+                    // pull thread
+                    setWinMsg("You have Won!", seconds);
                 }
 
                 for (int i = 0; i < 5; i++) {
@@ -210,25 +226,29 @@ public class WordleApp extends JFrame {
         } catch (FileNotFoundException e1) {}
 
     }
-    private void resetFocusParams(int currentIndex) {
-        int IntValue = (int) Math.round((Math.floor(currentIndex / 5.0)) * 5.0);
-        int IntValueMax = IntValue + 5;
-        System.out.println(IntValue);
 
-        for (int i = 0; i < 30; i++) {
-            if (i >= IntValue && i < IntValueMax) {
-                inputField[i].setEditable(true);
+    static int seconds = 0;
+
+    public static Thread timer = new Thread() {
+        public void run() {
+            while(true) {
+                try{
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                seconds+=1;
             }
         }
-    }
-
+    };
     public static void main(String[] args) throws IOException {
-        WordleApp myFrame = new WordleApp();;
+        timer.start();
+        WordleApp myFrame = new WordleApp();
+        myFrame.setResizable(false);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myFrame.setPreferredSize(new Dimension(800, 1000));
         myFrame.setBackground(Color.WHITE);
         myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.LIGHT_GRAY));
         myFrame.pack();
         myFrame.setVisible(true);
-    }
+    };
 }
