@@ -1,12 +1,11 @@
-
 /**
-* The WordleApp program creates a clone of the very popular game Wordle,
-* which you can play at https://www.powerlanguage.co.uk/wordle/.
-*
-* @authors Vikram Bhojanala, Kayetan Protas, Joshua Macdonald
-* @version 1.0
-* @since   2022-01-27
-*/
+ * The WordleApp program creates a clone of the very popular game Wordle,
+ * which you can play at https://www.powerlanguage.co.uk/wordle/.
+ *
+ * @authors Vikram Bhojanala, Kayetan Protas, Joshua Macdonald
+ * @version 1.0
+ * @since   2022-01-27
+ */
 
 import javax.swing.*; // Import  Swing Class
 import java.awt.*; // Import AWT Class
@@ -20,7 +19,6 @@ import java.io.IOException; // Import IOException Class
 import java.io.File; // Import File Class 
 import java.util.Scanner; // Import the Scanner Class
 
-
 public class WordleApp extends JFrame implements ActionListener {
     static JTextField[] inputField = new JTextField[30];
     private String wordleWord;
@@ -30,15 +28,15 @@ public class WordleApp extends JFrame implements ActionListener {
     int currentIndex;
     JLabel myLabel;
     int guessNumber = 0;
-    static int seconds = 0;
+    static int seconds = 0; // Used in the timer() Method to count time
     // Variable definitions
 
     /**
-    * The setErrorMsg method creates an Error Message using a pop up window, with the text param.
-    * @param  text  the error message in String format.
-    */
+     * The setErrorMsg method creates an Error Message using a pop-up window, with the text param.
+     * @param  text the error message in String format.
+     */
     public static void setErrorMsg(String text) {
-        Toolkit.getDefaultToolkit().beep(); 
+        Toolkit.getDefaultToolkit().beep();
         JOptionPane optionPane = new JOptionPane(text, JOptionPane.ERROR_MESSAGE);
         JDialog dialog = optionPane.createDialog("Error");
         optionPane.setPreferredSize(new Dimension(500, 600));
@@ -47,28 +45,28 @@ public class WordleApp extends JFrame implements ActionListener {
     }
 
     /**
-    * The setWinMsg method creates an Informational Message using a pop up window, 
-    * telling the user that they have won the game.
-    * The message includes the # of seconds and guesses they took to finish the game.
-    * @param seconds  the # of seconds the user took.
-    * @param seconds  the # of currentIndex of the user.
-    */
+     * The setWinMsg method creates an Informational Message using a pop-up window, 
+     * telling the user that they have won the game.
+     * The message includes the # of seconds and guesses they took to finish the game.
+     * @param seconds the # of seconds the user took.
+     * @param seconds the # of currentIndex of the user.
+     */
     public static void setWinMsg(int seconds, int currentIndex) {
-        int guesses = (currentIndex+1)/5; // Calculation of guesses using the currentIndex param.
-        Toolkit.getDefaultToolkit().beep(); 
+        int guesses = (currentIndex + 1) / 5; // Calculation of guesses using the currentIndex param.
+        Toolkit.getDefaultToolkit().beep();
         JOptionPane optionPane = new JOptionPane("You took " + seconds + " seconds!\n" + "You took " + guesses + " guesses!", JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = optionPane.createDialog("You have Won!");
-        optionPane.setPreferredSize(new Dimension(300, 300)); 
+        optionPane.setPreferredSize(new Dimension(300, 300));
         dialog.setAlwaysOnTop(false);
-        dialog.setVisible(true); 
+        dialog.setVisible(true);
     }
 
     /**
-    * The checkWord checks wether the word the user has inputted is valid or not
-    * by checking the local 5 letter word database.
-    * @param word the word the user has inputted in String format.
-    * @return true if the word exists and false if it does not.
-    */
+     * The checkWord() Method checks whether the word the user has inputted is valid or not
+     * by checking the local 5 letter word database.
+     * @param word the user has inputted in String format.
+     * @return true if the word exists and false if it does not.
+     */
     public static boolean checkWord(String word) throws FileNotFoundException {
         word = word.toLowerCase(); // sets the word to lowercase
         char letter = Character.toLowerCase(word.charAt(0)); // Takes the first letter of the word
@@ -84,9 +82,9 @@ public class WordleApp extends JFrame implements ActionListener {
     }
 
     /**
-    * The generateWordle method generates a random Wordle.
-    * @return the word that is generated.
-    */
+     * The generateWordle method generates a random Wordle.
+     * @return the word that is generated.
+     */
     public static String generateWordle() throws FileNotFoundException {
         int num = (int)(Math.random() * (5750 - 1 + 1) + 1); // generates a number between 1 and 5750, which is the number of words in the wordbank
         String word = "";
@@ -102,10 +100,10 @@ public class WordleApp extends JFrame implements ActionListener {
     }
 
     /**
-    * The resetFocusParams method only allows the user to edit the 5 letter line they are currently focused on.
-    * It disables the user to edit any of the input fields above or below the line.
-    * @param currentIndex is the current index of the user.
-    */
+     * The resetFocusParams method only allows the user to edit the 5 letter line they are currently focused on.
+     * It disables the user to edit any of the input fields above or below the line.
+     * @param currentIndex is the current index of the user.
+     */
     private void resetFocusParams(int currentIndex) {
         int IntValue = (int) Math.round((Math.floor(currentIndex / 5.0)) * 5.0);
         int IntValueMax = IntValue + 5;
@@ -121,6 +119,9 @@ public class WordleApp extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * The WordleApp() Method creates the input fields for the main wordle Window.
+     */
     private WordleApp() throws IOException {
         GridBagConstraints positionConstants;
         int i, j;
@@ -198,62 +199,75 @@ public class WordleApp extends JFrame implements ActionListener {
             });
         }
 
-        JButton EnterButton;
-        EnterButton = new JButton("Enter");
-        EnterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10));
-        EnterButton.setPreferredSize(new Dimension(70, 40));
-        positionConstants.gridx = 5;
-        positionConstants.gridy = 5;
-        positionConstants.insets = new Insets(4, 4, 4, 4);
-        add(EnterButton, positionConstants);
-        EnterButton.addActionListener(this);
+        JButton EnterButton; // Creates an Enter Button
+        EnterButton = new JButton("Enter"); // Sets the Button's text to "Enter"
+        EnterButton.setFont(new Font("Aldous Vertical", Font.PLAIN, 10)); // Sets the font of the button
+        EnterButton.setPreferredSize(new Dimension(70, 40)); // Sets the demensions of the button
+        positionConstants.gridx = 5; // Sets the x position of the button
+        positionConstants.gridy = 5; // Sets the y position of the button
+        positionConstants.insets = new Insets(4, 4, 4, 4); // Sets the insets of the button
+        add(EnterButton, positionConstants); // Adds the button to the Window
+        EnterButton.addActionListener(this); // Sets the button press to execute actionPerformed() method
 
     }
+
+    /**
+     * The actionPerformed method compares the user word with the wordle.
+     * It sets the letters in the correct position to green.
+     * It sets the letters that are in the wrong position but are in the word to yellow.
+     * It sets the letters that are not in the world to grey.
+     * It does this by:
+     *   1. Creating 2, 2 multi-dimensional arrays. They will have two rows and five columns. - One will be used by the word of the app other for the user input. 
+     *   2. Then a direct comparison of userArray[i] == appArray[i]. If they are the same make the boxes green and in the second-row mark with "U". (U stands for Unavailable and A stands for Available)
+     *   3. Now in this step, you will again loop through. If in the second row it is "A" which means it is still available then loop again with the appArray:
+     *       a)First check if appArray[i,1] is available. If it is then check if they are the same. And then make it Yellow and mark userArray[i,1] and appArray[i,1] as "U".
+     *       b)If they are not the same, set the box colour to grey.
+     * This executes every time the user clicks the Enter button.
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
 
-        StringBuilder word = new StringBuilder();
-        char[] inputChar = new char[5];
-        System.out.println(wordleWord);
+        StringBuilder word = new StringBuilder(); // Create StringBuilder word
+        char[] inputChar = new char[5]; // Create a char array named inputChar that has 5 spaces
 
         for (int i = 0; i < 5; i++) {
             inputChar[i] = inputField[5 * guessNumber + i].getText().charAt(0);
-            word.append(inputChar[i]);
+            word.append(inputChar[i]); // Fill the StringBuilder word with the user's input
         }
 
-        String singleString = word.toString();
-        char[][] userArray = new char[5][2];
-        char[][] appArray = new char[5][2];
+        String singleString = word.toString(); // Set to String
+        char[][] appArray = new char[5][2]; // Creates a 2 demensional Array intended to hold the Wordle word
+        char[][] usersArray = new char[5][2]; // Creates a 2 demensional Array intended to hold the user inputted word
 
         try {
-            if (checkWord(singleString)) {
+            if (checkWord(singleString)) { // Ensures the Word exists by calling the checkWord() method
 
                 for (int i = 0; i < 5; i++) {
-                    userArray[i][0] = wordleWord.charAt(i);
-                    appArray[i][0] = inputChar[i];
-                    if (inputChar[i] == wordleWord.charAt(i)) {
-                        inputField[5 * guessNumber + i].setBackground(new Color(106, 170, 100));
-                        userArray[i][1] = 'u';
-                        appArray[i][1] = 'u';
+                    appArray[i][0] = wordleWord.charAt(i);
+                    usersArray[i][0] = inputChar[i];
+                    if (inputChar[i] == wordleWord.charAt(i)) { // Check if the characters are the same
+                        inputField[5 * guessNumber + i].setBackground(new Color(106, 170, 100)); // Sets Background Color to Green
+                        appArray[i][1] = 'u'; // set as Unavailable 
+                        usersArray[i][1] = 'u'; // set as Unavailable 
                     } else {
-                        userArray[i][1] = 'a';
-                        appArray[i][1] = 'a';
+                        appArray[i][1] = 'a'; // set as Available 
+                        usersArray[i][1] = 'a'; // set as Available 
                     }
                 }
-                if (singleString.equals(wordleWord)) {
-                    setWinMsg(seconds, currentIndex);
+                if (singleString.equals(wordleWord)) { // Checks if the user inputted word is exactly correct
+                    setWinMsg(seconds, currentIndex); // sends win message
                 }
 
                 for (int i = 0; i < 5; i++) {
                     for (int j = 0; j < 5; j++) {
-                        if (userArray[i][1] == 'a') {
-                            if (appArray[j][1] == 'a') {
-                                if (appArray[j][0] == userArray[i][0]) {
-                                    inputField[5 * guessNumber + j].setBackground(new Color(201, 180, 88));
-                                    userArray[i][1] = 'u';
-                                    appArray[j][1] = 'u';
-                                } else {
-                                    inputField[5 * guessNumber + j].setBackground(new Color(129, 131, 132));
+                        if (appArray[i][1] == 'a') { // Check if it is Available
+                            if (usersArray[j][1] == 'a') { // Check if it is Available
+                                if (usersArray[j][0] == appArray[i][0]) { // Check if they are the same
+                                    inputField[5 * guessNumber + j].setBackground(new Color(201, 180, 88)); // Sets Background Color to Yellow
+                                    appArray[i][1] = 'u'; // set as Unavailable 
+                                    usersArray[j][1] = 'u'; // set as Unavailable 
+                                } else { // If they are not the same, set as grey
+                                    inputField[5 * guessNumber + j].setBackground(new Color(129, 131, 132)); // Sets Background Color to Grey
                                 }
                             }
                         }
@@ -266,17 +280,17 @@ public class WordleApp extends JFrame implements ActionListener {
                 resetFocusParams(currentIndex);
 
             } else {
-                setErrorMsg("Word does not exist.");
+                setErrorMsg("Word does not exist."); // Sends Error Message if the word does not exist
             }
         } catch (FileNotFoundException e1) {}
 
     }
 
     /**
-    * The timer method creates a Thread timer that is used to track the entire time the program has been running,
-    * by adding to seconds every 1000 milliseconds.
-    * Once the program has stopped, the method stops adding to seconds.
-    */
+     * The timer method creates a Thread timer that is used to track the entire time the program has been running,
+     * by adding to seconds every 1000 milliseconds.
+     * Once the program has stopped, the method stops adding to seconds.
+     */
     public static Thread timer = new Thread() {
         public void run() {
             while (true) {
@@ -291,8 +305,8 @@ public class WordleApp extends JFrame implements ActionListener {
     };
 
     /**
-    * The main method creates a JFrame called myFrame that contains all the contents of the app.
-    */
+     * The main method creates a JFrame called myFrame that contains all the contents of the app.
+     */
     public static void main(String[] args) throws IOException {
         timer.start(); // starts the timer
         WordleApp myFrame = new WordleApp(); // creates the JFrame
