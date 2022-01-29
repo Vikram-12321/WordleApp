@@ -30,6 +30,7 @@ public class WordleApp extends JFrame implements ActionListener {
     int currentIndex;
     JLabel myLabel;
     int guessNumber = 0;
+    static int seconds = 0;
     // Variable definitions
 
     /**
@@ -271,8 +272,11 @@ public class WordleApp extends JFrame implements ActionListener {
 
     }
 
-    static int seconds = 0;
-
+    /**
+    * The timer method creates a Thread timer that is used to track the entire time the program has been running,
+    * by adding to seconds every 1000 milliseconds.
+    * Once the program has stopped, the method stops adding to seconds.
+    */
     public static Thread timer = new Thread() {
         public void run() {
             while (true) {
@@ -286,14 +290,17 @@ public class WordleApp extends JFrame implements ActionListener {
         }
     };
 
+    /**
+    * The main method creates a JFrame called myFrame that contains all the contents of the app.
+    */
     public static void main(String[] args) throws IOException {
-        timer.start();
-        WordleApp myFrame = new WordleApp();
-        myFrame.setResizable(false);
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myFrame.setBackground(Color.WHITE);
-        myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.LIGHT_GRAY));
-        myFrame.pack();
-        myFrame.setVisible(true);
+        timer.start(); // starts the timer
+        WordleApp myFrame = new WordleApp(); // creates the JFrame
+        myFrame.setResizable(false); // Doesn't allow the window to be resized
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //  Exit the application using the System exit method once the window has been closed
+        myFrame.setBackground(Color.WHITE); // Sets the background color to white
+        myFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.LIGHT_GRAY)); // Sets a Light Grey border
+        myFrame.pack(); // Causes this Window to be sized to fit the preferred size and layouts of its subcomponents
+        myFrame.setVisible(true); // Sets the Frame to visable
     }
 }
